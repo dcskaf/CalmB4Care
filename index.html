@@ -1,46 +1,1283 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+
+<html class="scroll-smooth" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Connecticut Health Literacy Project</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calm Before Care</title>
+<!-- Google Fonts: Fraunces for magical headings, Nunito for soft readable body -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
         tailwind.config = {
-            theme: { extend: { fontFamily: { sans: ['Nunito', 'sans-serif'], storybook: ['Fraunces', 'serif'] }, colors: { sb: { ivory: '#FDFBF7', cornflower: '#7EA8D9', dustyblue: '#8EB1C7', sage: '#7A9E7E', eucalyptus: '#5C8D89', seaglass: '#6BBFA3', aqua: '#C4EAE4', slate: '#3A4B55', charcoal: '#24333B' } }, boxShadow: { 'storybook': '0 12px 30px -10px rgba(92, 141, 137, 0.2)' } } }
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        storybook: ['Fraunces', 'serif'],
+                    },
+                    colors: {
+                        sb: {
+                            ivory: '#FDFBF7',
+                            cornflower: '#7EA8D9',
+                            dustyblue: '#8EB1C7',
+                            sage: '#7A9E7E',
+                            eucalyptus: '#5C8D89',
+                            seaglass: '#6BBFA3',
+                            aqua: '#C4EAE4',
+                            slate: '#3A4B55',
+                            charcoal: '#24333B',
+                        }
+                    },
+                    boxShadow: {
+                        'storybook': '0 12px 30px -10px rgba(92, 141, 137, 0.2)',
+                        'glow': '0 0 25px rgba(126, 168, 217, 0.4)',
+                        'card': '0 8px 20px -6px rgba(122, 158, 126, 0.15)',
+                    }
+                }
+            }
         }
     </script>
+<style>
+        body {
+            background-color: #FDFBF7;
+            color: #3A4B55;
+            overflow-x: hidden;
+        }
+
+        /* Magical Storybook Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes float-tilt {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes dissolve-down {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-tilt { animation: float-tilt 7s ease-in-out infinite; }
+        .animate-sway { animation: sway 5s ease-in-out infinite; transform-origin: bottom center; }
+        .animate-pulse-glow { animation: gentle-pulse 4s ease-in-out infinite; }
+        .animate-dissolve { animation: dissolve-down 3s ease-in infinite; }
+        .animate-pulse-slow { animation: pulse-soft 4s ease-in-out infinite; }
+        
+        .delay-1 { animation-delay: 1.5s; }
+        .delay-2 { animation-delay: 3s; }
+        .delay-3 { animation-delay: 4.5s; }
+
+        /* Storybook Card Interactions */
+        .story-card {
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid transparent;
+        }
+        .story-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px -12px rgba(126, 168, 217, 0.3);
+            border-color: rgba(126, 168, 217, 0.3);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.5, 0, 0, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        .soft-serif-word {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: 700;
+        }
+
+        .soft-serif-letter {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: inherit;
+            font-style: normal;
+        }
+
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #8EB1C7; border-radius: 6px; border: 3px solid #FDFBF7; }
+        ::-webkit-scrollbar-thumb:hover { background: #7EA8D9; }
+    </style>
 </head>
-<body class="bg-sb-ivory text-sb-slate antialiased">
-
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-sb-ivory/90 backdrop-blur-md border-2 border-sb-aqua/50 px-6 py-3 rounded-full shadow-storybook flex items-center gap-8 w-[95%] max-w-4xl justify-between">
-        <a href="index.html" class="font-storybook font-bold text-2xl text-sb-eucalyptus tracking-wide flex items-center gap-2">
-            <div class="w-8 h-8 bg-sb-sage rounded-lg flex items-center justify-center text-white text-sm">CHL</div>
+<body class="antialiased selection:bg-sb-cornflower selection:text-white relative">
+<!-- Floating world elements in the background -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute top-[10%] left-[-5%] w-96 h-96 bg-sb-aqua/30 rounded-full mix-blend-multiply filter blur-3xl animate-float-tilt"></div>
+<div class="absolute top-[40%] right-[-10%] w-[30rem] h-[30rem] bg-sb-sage/20 rounded-full mix-blend-multiply filter blur-3xl animate-float delay-1"></div>
+<div class="absolute bottom-[20%] left-[10%] w-80 h-80 bg-sb-cornflower/20 rounded-full mix-blend-multiply filter blur-3xl animate-float delay-2"></div>
+</div>
+<!-- RESTORED NAVIGATION -->
+<nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-sb-ivory/80 backdrop-blur-md border-2 border-sb-aqua/50 px-6 py-3 rounded-full shadow-storybook flex items-center gap-8 w-[95%] max-w-3xl justify-between transition-all duration-300 hover:bg-sb-ivory">
+<a class="flex items-center gap-3 group" href="index.html">
+<!-- Original B4 Sparkle Logo -->
+<svg class="group-hover:rotate-6 transition-transform duration-300" fill="none" height="36" viewbox="0 0 40 40" width="36">
+<rect fill="#7A9E7E" fill-opacity="0.15" height="40" rx="14" width="40"></rect>
+<path d="M14 12C14 10.8954 14.8954 10 16 10H22C25.3137 10 28 12.6863 28 16C28 18.0694 26.9515 19.8942 25.3409 20.9419C27.5358 21.8491 29 24.0326 29 26.5C29 30.0899 26.0899 33 22.5 33H16C14.8954 33 14 32.1046 14 31V12Z" fill="#5C8D89"></path>
+<path d="M28 8 L29 11 L32 12 L29 13 L28 16 L27 13 L24 12 L27 11 Z" fill="#7EA8D9"></path>
+</svg>
+<span class="font-storybook font-bold text-2xl text-sb-eucalyptus tracking-wide">B4</span>
+</a>
+<div class="hidden md:flex gap-6 text-base font-bold text-sb-slate">
+<a class="hover:text-sb-cornflower transition-colors" href="about.html">About</a>
+<a class="hover:text-sb-sage transition-colors" href="resources.html">Resources</a>
+<a class="hover:text-sb-cornflower transition-colors" href="contact.html">Contact</a>
+</div>
+<a class="bg-sb-cornflower text-white px-6 py-2.5 rounded-full text-base font-bold hover:bg-sb-eucalyptus transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5 duration-200" href="donate.html">
+            Donate
         </a>
-        <div class="hidden md:flex gap-6 text-base font-bold text-sb-slate">
-            <a href="about.html" class="hover:text-sb-cornflower transition-colors">About Us</a>
-            <a href="resources.html" class="hover:text-sb-sage transition-colors">Resources</a>
-            <a href="contact.html" class="hover:text-sb-cornflower transition-colors">Contact</a>
-        </div>
-        <a href="donate.html" class="bg-sb-cornflower text-white px-6 py-2 rounded-full font-bold hover:bg-sb-eucalyptus transition-colors">Donate</a>
-    </nav>
+</nav>
+<!-- RESTORED HERO SECTION -->
+<section class="relative min-h-[100vh] flex flex-col justify-center pt-32 pb-36 overflow-hidden z-0">
+<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10 w-full">
+<div class="space-y-8 reveal active">
+<div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border-2 border-sb-aqua shadow-sm text-sb-eucalyptus font-bold text-sm animate-float-tilt">
+                    Calm Before Care
+                </div>
+<h1 class="font-storybook text-6xl md:text-7xl font-bold text-sb-charcoal leading-[1.1]">
+                    A gentle space <span class="soft-serif-letter">f</span>or <span class="text-sb-cornflower relative inline-block">
+                        connection
+                        <svg class="absolute w-full h-4 -bottom-1 left-0 text-sb-aqua" preserveaspectratio="none" viewbox="0 0 100 10"><path d="M0 8 Q 50 18 100 0" fill="transparent" stroke="currentColor" stroke-linecap="round" stroke-width="6"></path></svg>
+</span> <br/>&amp; calm care.
+                </h1>
+<p class="text-xl text-sb-slate leading-relaxed max-w-lg font-medium">
+                    Bridging barriers between healthcare workers and patients. We provide visual tools to make urgent moments feel softer, safer, and understood.
+                </p>
+<div class="flex flex-wrap gap-5 pt-4">
+<a class="bg-sb-sage text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-sb-eucalyptus transition-all duration-300 flex items-center gap-3 shadow-card hover:-translate-y-1 hover:shadow-lg" href="resources.html">
+                        Open the Toolkit
+                        <svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="22"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+</a>
+<a class="bg-white text-sb-eucalyptus px-8 py-4 rounded-full font-bold text-lg hover:-translate-y-1 shadow-sm transition-all duration-300 border-2 border-sb-aqua hover:border-sb-sage hover:shadow-card" href="about.html">
+                        Our Mission
+                    </a>
+</div>
+</div>
+<div class="relative h-[550px] w-full flex justify-center items-center">
+<!-- Original Hero Illustration -->
+<svg class="w-full h-full drop-shadow-2xl" fill="none" viewbox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialgradient cx="50%" cy="50%" id="fadeMaskGrad" r="50%">
+<stop offset="75%" stop-color="white" stop-opacity="1"></stop>
+<stop offset="98%" stop-color="white" stop-opacity="0"></stop>
+</radialgradient>
+<mask id="fadeMask">
+<circle cx="250" cy="250" fill="url(#fadeMaskGrad)" r="250"></circle>
+</mask>
+</defs>
+<g mask="url(#fadeMask)">
+<circle cx="250" cy="250" fill="#C4EAE4" fill-opacity="0.5" r="230"></circle>
+<path d="M20 250 Q120 180 250 250 T480 250 L480 480 L20 480 Z" fill="#8EB1C7" fill-opacity="0.3"></path>
+<path d="M20 320 Q150 250 280 320 T480 300 L480 480 L20 480 Z" fill="#7A9E7E" fill-opacity="0.2"></path>
+<circle class="animate-sway delay-1" cx="100" cy="200" fill="#5C8D89" r="40"></circle>
+<circle class="animate-sway delay-1" cx="80" cy="220" fill="#7A9E7E" r="30"></circle>
+<circle class="animate-sway delay-1" cx="120" cy="220" fill="#6BBFA3" r="25"></circle>
+<circle class="animate-sway delay-3" cx="420" cy="180" fill="#7EA8D9" r="45"></circle>
+<circle class="animate-sway delay-3" cx="390" cy="210" fill="#8EB1C7" r="35"></circle>
+<path d="M120 320 Q250 220 380 320" stroke="#5C8D89" stroke-linecap="round" stroke-width="24"></path>
+<path d="M120 320 Q250 220 380 320" stroke="#FDFBF7" stroke-linecap="round" stroke-width="14"></path>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="160" x2="160" y1="288" y2="305"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="200" x2="200" y1="262" y2="280"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="250" x2="250" y1="250" y2="268"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="300" x2="300" y1="262" y2="280"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="340" x2="340" y1="288" y2="305"></line>
+<g transform="translate(140, 240)">
+<path d="M-15 40 Q0 10 15 40 Z" fill="#8EB1C7"></path>
+<circle cx="0" cy="15" fill="#7EA8D9" r="22"></circle>
+<circle cx="-5" cy="12" fill="#24333B" r="2.5"></circle>
+<circle cx="7" cy="12" fill="#24333B" r="2.5"></circle>
+<path d="M-2 18 Q1 22 4 18" stroke="#24333B" stroke-linecap="round" stroke-width="2"></path>
+</g>
+<g transform="translate(360, 240)">
+<path d="M-20 40 Q0 0 20 40 Z" fill="#7A9E7E"></path>
+<circle cx="0" cy="10" fill="#6BBFA3" r="24"></circle>
+<path d="M-12 -10 L0 -20 L12 -10 Z" fill="#FDFBF7"></path>
+<circle cx="-7" cy="8" fill="#24333B" r="2.5"></circle>
+<circle cx="5" cy="8" fill="#24333B" r="2.5"></circle>
+<path d="M-3 15 Q-1 19 3 15" stroke="#24333B" stroke-linecap="round" stroke-width="2"></path>
+</g>
+<g class="animate-float-tilt delay-1" transform="translate(250, 150)">
+<circle cx="0" cy="0" fill="#FDFBF7" filter="drop-shadow(0px 8px 12px rgba(126,168,217,0.3))" r="30"></circle>
+<path d="M0 5 C0 5 -10 -5 -20 5 C-30 15 0 35 0 35 C0 35 30 15 20 5 C10 -5 0 5 0 5 Z" fill="#7EA8D9" transform="translate(0, -18) scale(0.6)"></path>
+</g>
+<g class="animate-float-tilt delay-2" transform="translate(180, 100) rotate(-15)">
+<rect fill="#FDFBF7" filter="drop-shadow(0px 8px 12px rgba(122,158,126,0.3))" height="50" rx="8" stroke="#7A9E7E" stroke-width="3" width="40" x="-20" y="-25"></rect>
+<circle cx="0" cy="-5" fill="#6BBFA3" r="8"></circle>
+<rect fill="#C4EAE4" height="4" rx="2" width="20" x="-10" y="10"></rect>
+</g>
+<g class="animate-float-tilt delay-3" transform="translate(320, 110) rotate(10)">
+<rect fill="#FDFBF7" filter="drop-shadow(0px 8px 12px rgba(126,168,217,0.3))" height="40" rx="8" stroke="#7EA8D9" stroke-width="3" width="50" x="-25" y="-20"></rect>
+<path d="M-10 0 L-2 8 L12 -6" stroke="#8EB1C7" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</g>
+<path class="animate-pulse-glow" d="M100 80 L105 95 L120 100 L105 105 L100 120 L95 105 L80 100 L95 95 Z" fill="#FDFBF7"></path>
+<path class="animate-pulse-glow delay-2" d="M400 90 L403 100 L413 103 L403 106 L400 116 L397 106 L387 103 L397 100 Z" fill="#FDFBF7"></path>
+<circle class="animate-pulse-glow delay-1" cx="250" cy="80" fill="#C4EAE4" r="4"></circle>
+<circle class="animate-pulse-glow delay-3" cx="150" cy="180" fill="#6BBFA3" r="5"></circle>
+</g>
+</svg>
+</div>
+</div>
+</section>
+<!-- SUMMARY SECTION: The Challenge -->
+<section class="pt-32 pb-24 relative bg-sb-eucalyptus/10 rounded-t-[4rem] -mt-12 z-10 shadow-[0_-8px_25px_rgba(0,0,0,0.03)] border-t border-white/50">
+<!-- Restored Floating decor -->
+<svg class="absolute top-10 right-10 w-24 h-24 text-sb-sage opacity-20 animate-sway" fill="currentColor" viewbox="0 0 100 100">
+<path d="M50 0 C70 40 100 50 100 50 C100 50 70 60 50 100 C30 60 0 50 0 50 C0 50 30 40 50 0 Z"></path>
+</svg>
+<div class="max-w-6xl mx-auto px-6 reveal">
+<div class="text-center mb-16">
+<h2 class="font-storybook text-5xl font-bold text-sb-charcoal mb-6">The Hidden Barrier</h2>
+<p class="text-xl text-sb-slate max-w-2xl mx-auto font-medium">Healthcare environments can feel like a stormy sea. When stress rises rapidly, the bridges of communication break down.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 mb-12">
+<!-- Story Card 1: Sensory Overload -->
+<div class="story-card bg-white rounded-[2.5rem] p-8 flex flex-col items-center text-center group relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-sb-aqua/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-32 h-32 mb-8 relative group-hover:scale-110 transition-transform duration-700">
+<svg class="w-full h-full text-sb-eucalyptus" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="#C4EAE4" r="45"></circle>
+<!-- Chaotic tangles in background -->
+<path class="animate-pulse-glow" d="M 20 40 Q 50 10 70 40 T 30 60 T 80 50" fill="none" opacity="0.5" stroke="#7EA8D9" stroke-width="1.5"></path>
+<!-- Central Figure -->
+<path d="M 30 80 C 30 55 70 55 70 80" fill="#5C8D89"></path>
+<circle cx="50" cy="45" fill="#5C8D89" r="14"></circle>
+<!-- Orbiting Senses -->
+<g class="animate-float">
+<circle cx="25" cy="30" fill="#7A9E7E" r="9"></circle>
+<path d="M 20 30 Q 25 25 30 30 Q 25 35 20 30" fill="#FDFBF7"></path>
+<circle cx="25" cy="30" fill="#24333B" r="2.5"></circle>
+</g>
+<g class="animate-float delay-1">
+<circle cx="75" cy="35" fill="#8EB1C7" r="9"></circle>
+<path d="M 72 32 V 38 M 75 31 V 38 M 78 33 V 38" stroke="#FDFBF7" stroke-linecap="round" stroke-width="1.5"></path>
+</g>
+<g class="animate-float delay-2">
+<circle cx="35" cy="70" fill="#6BBFA3" r="9"></circle>
+<path d="M 33 67 C 37 67 38 70 35 71 C 32 72 38 75 38 75" fill="none" stroke="#FDFBF7" stroke-linecap="round" stroke-width="1.5"></path>
+</g>
+</svg>
+</div>
+<h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-4">Sensory Overload</h3>
+<p class="text-sb-slate text-lg">Bright lights and alarms create an environment that feels too loud to process.</p>
+</div>
+<!-- Story Card 2: Communication Drop -->
+<div class="story-card bg-white rounded-[2.5rem] p-8 flex flex-col items-center text-center group mt-4 md:mt-12 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-sb-cornflower/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-32 h-32 mb-8 relative group-hover:scale-110 transition-transform duration-700">
+<svg class="w-full h-full text-sb-cornflower" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="#8EB1C7" fill-opacity="0.1" r="45"></circle>
+<!-- Person Figure -->
+<path d="M 35 85 C 35 70 65 70 65 85" fill="#7A9E7E"></path>
+<circle cx="50" cy="65" fill="#7EA8D9" r="12"></circle>
+<!-- Thought Bubble -->
+<g class="animate-pulse-slow">
+<rect fill="#FDFBF7" height="32" rx="16" stroke="#8EB1C7" stroke-width="1" width="60" x="20" y="15"></rect>
+<!-- Thought Dots (Dissolving) -->
+<g class="animate-dissolve">
+<circle cx="36" cy="31" fill="#5C8D89" r="3"></circle>
+<circle cx="50" cy="31" fill="#5C8D89" r="3"></circle>
+<circle cx="64" cy="31" fill="#5C8D89" r="3"></circle>
+</g>
+</g>
+</svg>
+</div>
+<h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-4">Communication Drop</h3>
+<p class="text-sb-slate text-lg">Under deep stress, speaking and answering questions can become physically impossible.</p>
+</div>
+<!-- Story Card 3: Escalating Stress -->
+<div class="story-card bg-white rounded-[2.5rem] p-8 flex flex-col items-center text-center group mt-8 md:mt-24 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-sb-sage/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-32 h-32 mb-8 relative group-hover:scale-110 transition-transform duration-700">
+<svg class="w-full h-full text-sb-sage" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="#6BBFA3" fill-opacity="0.3" r="45"></circle>
+<g class="animate-float delay-2">
+<!-- Gauge Outline -->
+<path d="M 20 65 A 30 30 0 0 1 80 65" stroke="#7A9E7E" stroke-linecap="round" stroke-width="8"></path>
+<!-- Warning Zone -->
+<path d="M 65 40 A 30 30 0 0 1 80 65" stroke="#3A4B55" stroke-linecap="round" stroke-width="8"></path>
+<!-- Gauge Base -->
+<circle cx="50" cy="65" fill="#5C8D89" r="6"></circle>
+<circle cx="50" cy="65" fill="#FDFBF7" r="2"></circle>
+<!-- Needle -->
+<line class="animate-sway" stroke="#24333B" stroke-linecap="round" stroke-width="3" x1="50" x2="68" y1="65" y2="42"></line>
+<!-- Action lines (pressure shaking) -->
+<path class="animate-pulse-glow delay-2" d="M 72 30 L 76 26 M 82 38 L 87 35" stroke="#3A4B55" stroke-linecap="round" stroke-width="2"></path>
+</g>
+</svg>
+</div>
+<h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-4">Escalating Stress</h3>
+<p class="text-sb-slate text-lg">Without tools to bridge the gap, anxiety spirals upward for both patient and provider.</p>
+</div>
+</div>
+<div class="text-center">
+<a class="inline-block bg-white text-sb-eucalyptus px-8 py-4 rounded-full font-bold text-lg border-2 border-sb-aqua hover:border-sb-sage transition-colors shadow-sm hover:shadow-md" href="about.html">
+                    Read Our Full Story
+                </a>
+</div>
+</div>
+</section>
+<!-- SUMMARY SECTION: Resources Garden -->
+<div class="relative w-full h-32 overflow-hidden -mb-1 bg-sb-eucalyptus/10 z-20">
+<svg aria-hidden="true" class="absolute bottom-0 w-full h-full text-sb-sage" preserveaspectratio="none" viewbox="0 0 1200 120">
+<path d="M0,0 C300,120 900,120 1200,0 L1200,120 L0,120 Z" fill="currentColor"></path>
+</svg>
+</div>
+<section class="pb-24 bg-sb-sage relative overflow-hidden z-20" style="padding-top: 6rem;">
+<!-- Richer garden atmosphere -->
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-sb-eucalyptus/[0.06]"></div>
+<div class="absolute top-10 left-[22%] w-80 h-80 bg-white/[0.05] rounded-full blur-3xl"></div>
+<div class="absolute top-24 right-24 w-72 h-72 bg-sb-aqua/[0.08] rounded-full blur-3xl"></div>
+<div class="absolute bottom-0 left-32 w-64 h-64 bg-sb-seaglass/[0.06] rounded-full blur-3xl"></div>
+<!-- Soft garden shapes -->
+<div class="absolute top-[6%] left-[2%] w-72 h-72 bg-sb-eucalyptus/18 rounded-[42%] rotate-12"></div>
+<div class="absolute top-[20%] left-[12%] w-52 h-36 bg-sb-eucalyptus/12 rounded-[48%] -rotate-12"></div>
+<div class="absolute top-[33%] right-[4%] w-[20rem] h-[15rem] bg-sb-seaglass/12 rounded-[45%] rotate-[22deg]"></div>
+<div class="absolute bottom-[18%] right-[11%] w-56 h-40 bg-sb-eucalyptus/14 rounded-[48%] rotate-[18deg]"></div>
+<div class="absolute bottom-[8%] right-[2%] w-72 h-72 bg-sb-seaglass/8 rounded-full"></div>
+<div class="absolute bottom-[8%] left-[30%] w-72 h-24 bg-sb-eucalyptus/10 rounded-full blur-2xl"></div>
+<div class="max-w-7xl mx-auto px-6 relative z-10 reveal active">
+<div class="grid md:grid-cols-[1.2fr_0.8fr] gap-8 items-center mb-14 md:mb-16">
+<div>
+<h2 class="font-storybook text-3xl md:text-[3.2rem] font-semibold text-white leading-tight mb-5">A Garden o<span class="soft-serif-letter">f</span> Resources</h2>
+<p class="text-lg md:text-[1.1rem] text-sb-ivory/95 font-medium leading-[1.8] max-w-3xl">
+                        We plant seeds of understanding by providing beautiful, tangible tools that transform chaotic environments into calm spaces.
+                    </p>
+</div>
+<div class="hidden md:flex justify-center md:justify-end pr-4">
+<svg aria-hidden="true" class="w-56 h-56 animate-float" fill="none" viewbox="0 0 220 230" xmlns="http://www.w3.org/2000/svg">
+<!-- === STEMS (deepest green so they read against the sage bg) === -->
+<path d="M98 205 Q84 175 60 132" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<path d="M104 205 Q94 166 78 114" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<path d="M110 205 Q110 162 110 98" stroke="#3A6645" stroke-linecap="round" stroke-width="4.5"></path>
+<path d="M116 205 Q126 166 142 114" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<path d="M122 205 Q136 175 160 132" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<!-- === LEAVES (darker than bg, clearly visible) === -->
+<path d="M92 182 Q66 163 58 136 Q82 151 92 182Z" fill="#4A7A54"></path>
+<path d="M96 168 Q74 153 72 128 Q92 141 96 168Z" fill="#5C8D62" fill-opacity="0.85"></path>
+<path d="M128 182 Q154 163 162 136 Q138 151 128 182Z" fill="#4A7A54"></path>
+<path d="M124 168 Q146 153 148 128 Q128 141 124 168Z" fill="#5C8D62" fill-opacity="0.85"></path>
+<path d="M110 176 Q97 155 100 130 Q118 147 110 176Z" fill="#4A7A54"></path>
+<!-- === BACK BUDS — clearly visible, softly coloured === -->
+<!-- back-left: warm ivory bud -->
+<g transform="translate(63 128) rotate(-16)">
+<ellipse cx="0" cy="-26" fill="#F5F0E8" rx="9.5" ry="20"></ellipse>
+<ellipse cx="-8" cy="-22" fill="#FAF6EE" rx="8" ry="16"></ellipse>
+<ellipse cx="8" cy="-22" fill="#FFFDF8" rx="8" ry="16"></ellipse>
+<ellipse cx="0" cy="-44" fill="#FFF8F0" fill-opacity="0.9" rx="5" ry="4"></ellipse>
+<ellipse cx="-8" cy="-37" fill="#FFF8F0" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="8" cy="-38" fill="#FFF8F0" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="0" cy="-24" fill="#C4EAE4" fill-opacity="0.5" rx="3" ry="5"></ellipse>
+</g>
+<!-- back-right: soft sky-blue bud -->
+<g transform="translate(157 128) rotate(16)">
+<ellipse cx="0" cy="-26" fill="#B2CCE0" rx="9.5" ry="20"></ellipse>
+<ellipse cx="-8" cy="-22" fill="#C0D8EA" rx="8" ry="16"></ellipse>
+<ellipse cx="8" cy="-22" fill="#CCE2F0" rx="8" ry="16"></ellipse>
+<ellipse cx="0" cy="-44" fill="#D8ECFA" fill-opacity="0.9" rx="5" ry="4"></ellipse>
+<ellipse cx="-8" cy="-37" fill="#D8ECFA" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="8" cy="-38" fill="#D8ECFA" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="0" cy="-24" fill="#FFFFFF" fill-opacity="0.4" rx="3" ry="5"></ellipse>
+</g>
+<!-- === FRONT THREE BLOOMS — all light tones, high contrast on sage === -->
+<!-- front-left: warm white / cream tulip -->
+<g transform="translate(80 111) rotate(-8)">
+<ellipse cx="0" cy="-36" fill="#FDFBF7" rx="12.5" ry="24"></ellipse>
+<ellipse cx="-10" cy="-28" fill="#F8F4EC" rx="10" ry="19"></ellipse>
+<ellipse cx="10" cy="-28" fill="#FFFDF8" rx="10" ry="19"></ellipse>
+<ellipse cx="-19" cy="-23" fill="#F2EEE4" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="19" cy="-23" fill="#F5F2E8" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="0" cy="-58" fill="#FFF8F0" fill-opacity="0.8" rx="6" ry="5"></ellipse>
+<ellipse cx="-10" cy="-46" fill="#FFFDF8" rx="5" ry="4.5"></ellipse>
+<ellipse cx="10" cy="-48" fill="#FFFDF8" rx="5" ry="4.5"></ellipse>
+<!-- aqua center accent -->
+<ellipse cx="0" cy="-32" fill="#8EB1C7" fill-opacity="0.25" rx="4.5" ry="7"></ellipse>
+</g>
+<!-- front-center: soft aqua bloom (tallest) — aqua pops beautifully on sage -->
+<g transform="translate(110 95)">
+<ellipse cx="0" cy="-38" fill="#C4EAE4" rx="13.5" ry="26"></ellipse>
+<ellipse cx="-11" cy="-30" fill="#AEDDD6" rx="11" ry="21"></ellipse>
+<ellipse cx="11" cy="-30" fill="#C8EDE8" rx="11" ry="21"></ellipse>
+<ellipse cx="-21" cy="-25" fill="#B8E4DC" fill-opacity="0.9" rx="7.5" ry="15"></ellipse>
+<ellipse cx="21" cy="-25" fill="#C0E8E2" fill-opacity="0.9" rx="7.5" ry="15"></ellipse>
+<ellipse cx="0" cy="-62" fill="#D8F2EE" fill-opacity="0.85" rx="7" ry="5.5"></ellipse>
+<ellipse cx="-11" cy="-49" fill="#D4EEEA" rx="6" ry="5.5"></ellipse>
+<ellipse cx="11" cy="-51" fill="#D4EEEA" rx="6" ry="5.5"></ellipse>
+<!-- white inner glow -->
+<ellipse cx="0" cy="-36" fill="#FFFFFF" fill-opacity="0.4" rx="5.5" ry="9"></ellipse>
+<!-- dark stamens for detail -->
+<circle cx="-3" cy="-29" fill="#3A6645" fill-opacity="0.6" r="2"></circle>
+<circle cx="3" cy="-29" fill="#3A6645" fill-opacity="0.6" r="2"></circle>
+<circle cx="0" cy="-25" fill="#3A6645" fill-opacity="0.5" r="2.2"></circle>
+</g>
+<!-- front-right: soft cornflower blue tulip -->
+<g transform="translate(140 111) rotate(8)">
+<ellipse cx="0" cy="-36" fill="#8EB1C7" rx="12.5" ry="24"></ellipse>
+<ellipse cx="-10" cy="-28" fill="#7EA8D9" fill-opacity="0.9" rx="10" ry="19"></ellipse>
+<ellipse cx="10" cy="-28" fill="#9ABCCE" rx="10" ry="19"></ellipse>
+<ellipse cx="-19" cy="-23" fill="#A4C4D6" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="19" cy="-23" fill="#A8C8DA" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="0" cy="-58" fill="#C0D8E8" fill-opacity="0.8" rx="6" ry="5"></ellipse>
+<ellipse cx="-10" cy="-46" fill="#B8D2E4" rx="5" ry="4.5"></ellipse>
+<ellipse cx="10" cy="-48" fill="#B8D2E4" rx="5" ry="4.5"></ellipse>
+<!-- white inner glow -->
+<ellipse cx="0" cy="-32" fill="#FFFFFF" fill-opacity="0.3" rx="4.5" ry="7"></ellipse>
+</g>
+<!-- === TINY SIDE BUDS === -->
+<g transform="translate(46 152) rotate(-28)">
+<ellipse cx="0" cy="-9" fill="#F8F4EC" fill-opacity="0.85" rx="4.5" ry="8"></ellipse>
+<ellipse cx="-4" cy="-5" fill="#F2EEE4" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+<ellipse cx="4" cy="-5" fill="#FFFDF8" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+</g>
+<g transform="translate(174 152) rotate(28)">
+<ellipse cx="0" cy="-9" fill="#C0D8EA" fill-opacity="0.85" rx="4.5" ry="8"></ellipse>
+<ellipse cx="-4" cy="-5" fill="#B2CCE0" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+<ellipse cx="4" cy="-5" fill="#CCE2F0" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+</g>
+<!-- === RIBBON TIE === -->
+<path d="M90 205 Q110 200 130 205 Q122 214 110 216 Q98 214 90 205Z" fill="#FFFFFF" fill-opacity="0.3"></path>
+<ellipse cx="110" cy="207" fill="#FFFFFF" fill-opacity="0.25" rx="7" ry="4"></ellipse>
+<!-- === SPARKLES === -->
+<path d="M48 112 L49.5 117 L54 118.5 L49.5 120 L48 125 L46.5 120 L42 118.5 L46.5 117 Z" fill="#FFFFFF" fill-opacity="0.7"></path>
+<path d="M172 97 L173 101 L177 102 L173 103 L172 107 L171 103 L167 102 L171 101 Z" fill="#FFFFFF" fill-opacity="0.65"></path>
+<circle cx="38" cy="144" fill="#FFFFFF" fill-opacity="0.5" r="2.2"></circle>
+<circle cx="182" cy="130" fill="#FFFFFF" fill-opacity="0.45" r="1.8"></circle>
+</svg>
+</div>
+</div>
+<div class="grid md:grid-cols-4 gap-5 lg:gap-6 mb-12">
+<div class="bg-[#9FB596]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#9BC0EA" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+<path d="M3.3 7 12 12l8.7-5"></path>
+<path d="M12 22V12"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Practical<br/>Tools</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Physical cards designed for immediate, gentle use in any room.</p>
+</div>
+<div class="bg-[#A6BC9C]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#F2F7F4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<rect height="18" rx="2" width="18" x="3" y="3"></rect>
+<circle cx="8.5" cy="8.5" r="1.5"></circle>
+<path d="M21 15l-5-5L5 21"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Visual<br/>Supports</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Picture-based boards that replace the need for spoken words entirely.</p>
+</div>
+<div class="bg-[#9CB39B]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#6C9799" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5Z"></path>
+<path d="M12 2v20"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Micro-<br/>Education</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Bite-sized, beautiful learning modules for busy healthcare staff.</p>
+</div>
+<div class="bg-[#A3B79D]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#B7D1EE" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+<circle cx="9" cy="7" r="4"></circle>
+<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Bridge<br/>Building</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Fostering deep teamwork between anxious families and busy providers.</p>
+</div>
+</div>
 
-    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-32 pb-24">
-        <h1 class="font-storybook text-5xl md:text-7xl font-bold text-sb-charcoal mb-6">
-            Bridging the gap in <span class="text-sb-cornflower">health literacy.</span>
-        </h1>
-        <p class="text-xl max-w-2xl text-sb-slate mb-10">
-            We provide clear, visual, and accessible tools to make medical environments feel softer, safer, and completely understood for every patient.
-        </p>
-        <div class="flex gap-4">
-            <a href="resources.html" class="bg-sb-sage text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-sb-eucalyptus transition-colors">Open the Toolkit</a>
-            <a href="about.html" class="bg-white text-sb-eucalyptus px-8 py-4 rounded-full font-bold text-lg border-2 border-sb-aqua hover:border-sb-sage transition-colors">Our Mission</a>
+</div>
+</section>
+
+    <!-- SUMMARY SECTION: Healthcare Teams -->
+    <div class="relative w-full h-40 overflow-hidden -mb-1 bg-sb-sage z-20 pointer-events-none">
+        <svg viewBox="0 0 1200 160" preserveAspectRatio="none" class="absolute inset-0 -left-[1%] w-[102%] h-full text-sb-ivory" aria-hidden="true">
+            <path d="M-20,142 C260,28 940,28 1220,142 L1220,160 L-20,160 Z" fill="currentColor"></path>
+        </svg>
+    </div>
+
+    <section class="py-24 relative bg-sb-ivory z-20 overflow-hidden" id="hospitals">
+        <div class="absolute top-0 inset-x-0 h-28 bg-sb-ivory z-0"></div>
+        <div class="absolute top-32 left-[-6rem] w-96 h-96 bg-sb-aqua/14 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-[-8rem] right-[-6rem] w-[28rem] h-[28rem] bg-sb-sage/10 rounded-full blur-2xl"></div>
+
+        <div class="max-w-5xl mx-auto px-6 reveal active relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="font-storybook text-4xl md:text-5xl font-bold text-sb-charcoal mb-6"><span class="soft-serif-letter">F</span>or Healthcare Teams</h2>
+                <p class="text-xl text-sb-slate max-w-2xl mx-auto font-medium leading-relaxed">
+                    Integrating calm into your workflow is a simple, guided path. Follow these steps to build a more inclusive environment.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative">
+                <div class="hidden md:block absolute top-14 left-[15%] right-[15%] h-2 bg-sb-aqua/30 rounded-full z-0"></div>
+                <div class="hidden md:block absolute top-14 left-[15%] right-[15%] h-2 border-t-4 border-dotted border-sb-sage z-0"></div>
+
+                <div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/3 group">
+                    <div class="w-32 h-32 bg-white rounded-full shadow-card border-4 border-sb-cornflower flex items-center justify-center mb-6 animate-float-tilt group-hover:scale-110 transition-transform duration-500">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#7EA8D9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-3">1. Explore</h3>
+                    <p class="text-sb-slate text-lg leading-relaxed">Wander through our visual toolkits and print the gentle keys for your department.</p>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/3 group">
+                    <div class="w-32 h-32 bg-white rounded-full shadow-card border-4 border-sb-sage flex items-center justify-center mb-6 animate-float-tilt delay-1 group-hover:scale-110 transition-transform duration-500">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                        </svg>
+                    </div>
+                    <h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-3">2. Use</h3>
+                    <p class="text-sb-slate text-lg leading-relaxed">Introduce the visual boards during high-stress moments to build an instant bridge.</p>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/3 group">
+                    <div class="w-32 h-32 bg-white rounded-full shadow-card border-4 border-sb-seaglass flex items-center justify-center mb-6 animate-float-tilt delay-2 group-hover:scale-110 transition-transform duration-500">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6BBFA3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-3">3. Learn</h3>
+                    <p class="text-sb-slate text-lg leading-relaxed">Review micro-education modules together in your morning stand-ups.</p>
+                </div>
+            </div>
+
+            <div class="mt-20 flex justify-center gap-6 flex-wrap">
+                <a href="resources.html" class="inline-flex items-center gap-3 bg-[#66999A] text-white px-9 py-4 rounded-full font-bold text-lg border-2 border-[#66999A] transition-all duration-300 shadow-card hover:bg-[#8AAD81] hover:border-[#8AAD81] hover:text-white hover:-translate-y-1 hover:shadow-lg">
+                    View Entire Library
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                <a href="contact.html" class="inline-flex items-center gap-3 bg-white text-sb-eucalyptus px-9 py-4 rounded-full font-bold text-lg hover:-translate-y-1 shadow-sm transition-all duration-300 border-2 border-sb-aqua hover:border-sb-eucalyptus hover:shadow-card">
+                    Request Resources
+                </a>
+            </div>
         </div>
     </section>
 
-    <footer class="bg-sb-eucalyptus text-sb-ivory py-12 text-center">
-        <p class="font-medium">&copy; 2026 The Connecticut Health Literacy Project. All rights reserved.</p>
-    </footer>
+<!-- RESTORED FOOTER -->
+<footer class="bg-sb-eucalyptus text-sb-ivory pt-24 pb-16 rounded-t-[5rem] relative overflow-hidden -mt-12 z-30 shadow-[0_-8px_25px_rgba(0,0,0,0.05)]">
+    <!-- subtle background glow -->
+    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent"></div>
+
+    <!-- large centered semicircle -->
+    <div class="absolute left-1/2 -translate-x-1/2 bottom-0 w-[90rem] h-[24rem] bg-[#578481] rounded-t-full pointer-events-none opacity-70"></div>
+
+    <!-- soft top divider line -->
+    <div class="absolute left-0 right-0 bottom-[14rem] h-px bg-white/10"></div>
+
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-[1.55fr_0.75fr_0.75fr] gap-12 mb-16 relative z-10">
+        <div class="md:col-span-1">
+            <div class="flex items-center gap-3 mb-6">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                    <rect width="40" height="40" rx="12" fill="#7A9E7E"/>
+                    <path d="M14 12C14 10.8954 14.8954 10 16 10H22C25.3137 10 28 12.6863 28 16C28 18.0694 26.9515 19.8942 25.3409 20.9419C27.5358 21.8491 29 24.0326 29 26.5C29 30.0899 26.0899 33 22.5 33H16C14.8954 33 14 32.1046 14 31V12Z" fill="#FDFBF7"/>
+                </svg>
+                <span class="font-storybook font-bold text-2xl tracking-wide text-white">Calm Before Care</span>
+            </div>
+            <p class="text-sb-aqua text-lg font-medium max-w-md leading-relaxed">Bridging communication barriers to create peaceful, understood healthcare experiences.</p>
+        </div>
+
+        <div>
+            <h4 class="font-storybook text-xl font-bold mb-6 text-white">Explore</h4>
+            <ul class="space-y-4 text-base text-sb-aqua font-medium">
+                <li><a href="about.html" class="hover:text-white transition-colors">Our Mission</a></li>
+                <li><a href="resources.html" class="hover:text-white transition-colors">Toolkit Library</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-storybook text-xl font-bold mb-6 text-white">Connect</h4>
+            <ul class="space-y-4 text-base text-sb-aqua font-medium">
+                <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="donate.html" class="hover:text-white transition-colors">Support the Project</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 pt-8 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-center text-sm text-sb-aqua/75 gap-6">
+            <p class="font-medium">© 2026 Calm Before Care. All rights reserved.</p>
+            <p class="text-center md:text-right max-w-2xl font-medium">
+                <span class="font-bold text-sb-aqua">Disclaimer:</span> We provide communication support and educational resources only. Always consult a healthcare professional.
+            </p>
+        </div>
+    </div>
+</footer>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        storybook: ['Fraunces', 'serif'],
+                    },
+                    colors: {
+                        sb: {
+                            ivory: '#FDFBF7',
+                            cornflower: '#7EA8D9',
+                            dustyblue: '#8EB1C7',
+                            sage: '#7A9E7E',
+                            eucalyptus: '#5C8D89',
+                            seaglass: '#6BBFA3',
+                            aqua: '#C4EAE4',
+                            slate: '#3A4B55',
+                            charcoal: '#24333B',
+                        }
+                    },
+                    boxShadow: {
+                        'storybook': '0 12px 30px -10px rgba(92, 141, 137, 0.2)',
+                        'glow': '0 0 25px rgba(126, 168, 217, 0.4)',
+                        'card': '0 8px 20px -6px rgba(122, 158, 126, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #FDFBF7;
+            color: #3A4B55;
+            overflow-x: hidden;
+        }
+
+        /* Magical Storybook Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes float-tilt {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes dissolve-down {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-tilt { animation: float-tilt 7s ease-in-out infinite; }
+        .animate-sway { animation: sway 5s ease-in-out infinite; transform-origin: bottom center; }
+        .animate-pulse-glow { animation: gentle-pulse 4s ease-in-out infinite; }
+        .animate-dissolve { animation: dissolve-down 3s ease-in infinite; }
+        .animate-pulse-slow { animation: pulse-soft 4s ease-in-out infinite; }
+        
+        .delay-1 { animation-delay: 1.5s; }
+        .delay-2 { animation-delay: 3s; }
+        .delay-3 { animation-delay: 4.5s; }
+
+        /* Storybook Card Interactions */
+        .story-card {
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid transparent;
+        }
+        .story-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px -12px rgba(126, 168, 217, 0.3);
+            border-color: rgba(126, 168, 217, 0.3);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.5, 0, 0, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        .soft-serif-word {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: 700;
+        }
+
+        .soft-serif-letter {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-weight: inherit;
+            font-style: normal;
+        }
+
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #8EB1C7; border-radius: 6px; border: 3px solid #FDFBF7; }
+        ::-webkit-scrollbar-thumb:hover { background: #7EA8D9; }
+    </style>
+</head>
+<body class="antialiased selection:bg-sb-cornflower selection:text-white relative">
+<!-- Floating world elements in the background -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute top-[10%] left-[-5%] w-96 h-96 bg-sb-aqua/30 rounded-full mix-blend-multiply filter blur-3xl animate-float-tilt"></div>
+<div class="absolute top-[40%] right-[-10%] w-[30rem] h-[30rem] bg-sb-sage/20 rounded-full mix-blend-multiply filter blur-3xl animate-float delay-1"></div>
+<div class="absolute bottom-[20%] left-[10%] w-80 h-80 bg-sb-cornflower/20 rounded-full mix-blend-multiply filter blur-3xl animate-float delay-2"></div>
+</div>
+<!-- RESTORED NAVIGATION -->
+<nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-sb-ivory/80 backdrop-blur-md border-2 border-sb-aqua/50 px-6 py-3 rounded-full shadow-storybook flex items-center gap-8 w-[95%] max-w-3xl justify-between transition-all duration-300 hover:bg-sb-ivory">
+<a class="flex items-center gap-3 group" href="index.html">
+<!-- Original B4 Sparkle Logo -->
+<svg class="group-hover:rotate-6 transition-transform duration-300" fill="none" height="36" viewbox="0 0 40 40" width="36">
+<rect fill="#7A9E7E" fill-opacity="0.15" height="40" rx="14" width="40"></rect>
+<path d="M14 12C14 10.8954 14.8954 10 16 10H22C25.3137 10 28 12.6863 28 16C28 18.0694 26.9515 19.8942 25.3409 20.9419C27.5358 21.8491 29 24.0326 29 26.5C29 30.0899 26.0899 33 22.5 33H16C14.8954 33 14 32.1046 14 31V12Z" fill="#5C8D89"></path>
+<path d="M28 8 L29 11 L32 12 L29 13 L28 16 L27 13 L24 12 L27 11 Z" fill="#7EA8D9"></path>
+</svg>
+<span class="font-storybook font-bold text-2xl text-sb-eucalyptus tracking-wide">B4</span>
+</a>
+<div class="hidden md:flex gap-6 text-base font-bold text-sb-slate">
+<a class="hover:text-sb-cornflower transition-colors" href="about.html">About</a>
+<a class="hover:text-sb-sage transition-colors" href="resources.html">Resources</a>
+<a class="hover:text-sb-cornflower transition-colors" href="contact.html">Contact</a>
+</div>
+<a class="bg-sb-cornflower text-white px-6 py-2.5 rounded-full text-base font-bold hover:bg-sb-eucalyptus transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5 duration-200" href="donate.html">
+            Donate
+        </a>
+</nav>
+<!-- RESTORED HERO SECTION -->
+<section class="relative min-h-[100vh] flex flex-col justify-center pt-32 pb-36 overflow-hidden z-0">
+<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10 w-full">
+<div class="space-y-8 reveal active">
+<div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border-2 border-sb-aqua shadow-sm text-sb-eucalyptus font-bold text-sm animate-float-tilt">
+                    Calm Before Care
+                </div>
+<h1 class="font-storybook text-6xl md:text-7xl font-bold text-sb-charcoal leading-[1.1]">
+                    A gentle space <span class="soft-serif-letter">f</span>or <span class="text-sb-cornflower relative inline-block">
+                        connection
+                        <svg class="absolute w-full h-4 -bottom-1 left-0 text-sb-aqua" preserveaspectratio="none" viewbox="0 0 100 10"><path d="M0 8 Q 50 18 100 0" fill="transparent" stroke="currentColor" stroke-linecap="round" stroke-width="6"></path></svg>
+</span> <br/>&amp; calm care.
+                </h1>
+<p class="text-xl text-sb-slate leading-relaxed max-w-lg font-medium">
+                    Bridging barriers between healthcare workers and patients. We provide visual tools to make urgent moments feel softer, safer, and understood.
+                </p>
+<div class="flex flex-wrap gap-5 pt-4">
+<a class="bg-sb-sage text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-sb-eucalyptus transition-all duration-300 flex items-center gap-3 shadow-card hover:-translate-y-1 hover:shadow-lg" href="resources.html">
+                        Open the Toolkit
+                        <svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="22"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+</a>
+<a class="bg-white text-sb-eucalyptus px-8 py-4 rounded-full font-bold text-lg hover:-translate-y-1 shadow-sm transition-all duration-300 border-2 border-sb-aqua hover:border-sb-sage hover:shadow-card" href="about.html">
+                        Our Mission
+                    </a>
+</div>
+</div>
+<div class="relative h-[550px] w-full flex justify-center items-center">
+<!-- Original Hero Illustration -->
+<svg class="w-full h-full drop-shadow-2xl" fill="none" viewbox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialgradient cx="50%" cy="50%" id="fadeMaskGrad" r="50%">
+<stop offset="75%" stop-color="white" stop-opacity="1"></stop>
+<stop offset="98%" stop-color="white" stop-opacity="0"></stop>
+</radialgradient>
+<mask id="fadeMask">
+<circle cx="250" cy="250" fill="url(#fadeMaskGrad)" r="250"></circle>
+</mask>
+</defs>
+<g mask="url(#fadeMask)">
+<circle cx="250" cy="250" fill="#C4EAE4" fill-opacity="0.5" r="230"></circle>
+<path d="M20 250 Q120 180 250 250 T480 250 L480 480 L20 480 Z" fill="#8EB1C7" fill-opacity="0.3"></path>
+<path d="M20 320 Q150 250 280 320 T480 300 L480 480 L20 480 Z" fill="#7A9E7E" fill-opacity="0.2"></path>
+<circle class="animate-sway delay-1" cx="100" cy="200" fill="#5C8D89" r="40"></circle>
+<circle class="animate-sway delay-1" cx="80" cy="220" fill="#7A9E7E" r="30"></circle>
+<circle class="animate-sway delay-1" cx="120" cy="220" fill="#6BBFA3" r="25"></circle>
+<circle class="animate-sway delay-3" cx="420" cy="180" fill="#7EA8D9" r="45"></circle>
+<circle class="animate-sway delay-3" cx="390" cy="210" fill="#8EB1C7" r="35"></circle>
+<path d="M120 320 Q250 220 380 320" stroke="#5C8D89" stroke-linecap="round" stroke-width="24"></path>
+<path d="M120 320 Q250 220 380 320" stroke="#FDFBF7" stroke-linecap="round" stroke-width="14"></path>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="160" x2="160" y1="288" y2="305"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="200" x2="200" y1="262" y2="280"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="250" x2="250" y1="250" y2="268"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="300" x2="300" y1="262" y2="280"></line>
+<line stroke="#5C8D89" stroke-linecap="round" stroke-width="4" x1="340" x2="340" y1="288" y2="305"></line>
+<g transform="translate(140, 240)">
+<path d="M-15 40 Q0 10 15 40 Z" fill="#8EB1C7"></path>
+<circle cx="0" cy="15" fill="#7EA8D9" r="22"></circle>
+<circle cx="-5" cy="12" fill="#24333B" r="2.5"></circle>
+<circle cx="7" cy="12" fill="#24333B" r="2.5"></circle>
+<path d="M-2 18 Q1 22 4 18" stroke="#24333B" stroke-linecap="round" stroke-width="2"></path>
+</g>
+<g transform="translate(360, 240)">
+<path d="M-20 40 Q0 0 20 40 Z" fill="#7A9E7E"></path>
+<circle cx="0" cy="10" fill="#6BBFA3" r="24"></circle>
+<path d="M-12 -10 L0 -20 L12 -10 Z" fill="#FDFBF7"></path>
+<circle cx="-7" cy="8" fill="#24333B" r="2.5"></circle>
+<circle cx="5" cy="8" fill="#24333B" r="2.5"></circle>
+<path d="M-3 15 Q-1 19 3 15" stroke="#24333B" stroke-linecap="round" stroke-width="2"></path>
+</g>
+<g class="animate-float-tilt delay-1" transform="translate(250, 150)">
+<circle cx="0" cy="0" fill="#FDFBF7" filter="drop-shadow(0px 8px 12px rgba(126,168,217,0.3))" r="30"></circle>
+<path d="M0 5 C0 5 -10 -5 -20 5 C-30 15 0 35 0 35 C0 35 30 15 20 5 C10 -5 0 5 0 5 Z" fill="#7EA8D9" transform="translate(0, -18) scale(0.6)"></path>
+</g>
+<g class="animate-float-tilt delay-2" transform="translate(180, 100) rotate(-15)">
+<rect fill="#FDFBF7" filter="drop-shadow(0px 8px 12px rgba(122,158,126,0.3))" height="50" rx="8" stroke="#7A9E7E" stroke-width="3" width="40" x="-20" y="-25"></rect>
+<circle cx="0" cy="-5" fill="#6BBFA3" r="8"></circle>
+<rect fill="#C4EAE4" height="4" rx="2" width="20" x="-10" y="10"></rect>
+</g>
+<g class="animate-float-tilt delay-3" transform="translate(320, 110) rotate(10)">
+<rect fill="#FDFBF7" filter="drop-shadow(0px 8px 12px rgba(126,168,217,0.3))" height="40" rx="8" stroke="#7EA8D9" stroke-width="3" width="50" x="-25" y="-20"></rect>
+<path d="M-10 0 L-2 8 L12 -6" stroke="#8EB1C7" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+</g>
+<path class="animate-pulse-glow" d="M100 80 L105 95 L120 100 L105 105 L100 120 L95 105 L80 100 L95 95 Z" fill="#FDFBF7"></path>
+<path class="animate-pulse-glow delay-2" d="M400 90 L403 100 L413 103 L403 106 L400 116 L397 106 L387 103 L397 100 Z" fill="#FDFBF7"></path>
+<circle class="animate-pulse-glow delay-1" cx="250" cy="80" fill="#C4EAE4" r="4"></circle>
+<circle class="animate-pulse-glow delay-3" cx="150" cy="180" fill="#6BBFA3" r="5"></circle>
+</g>
+</svg>
+</div>
+</div>
+</section>
+<!-- SUMMARY SECTION: The Challenge -->
+<section class="pt-32 pb-24 relative bg-sb-eucalyptus/10 rounded-t-[4rem] -mt-12 z-10 shadow-[0_-8px_25px_rgba(0,0,0,0.03)] border-t border-white/50">
+<!-- Restored Floating decor -->
+<svg class="absolute top-10 right-10 w-24 h-24 text-sb-sage opacity-20 animate-sway" fill="currentColor" viewbox="0 0 100 100">
+<path d="M50 0 C70 40 100 50 100 50 C100 50 70 60 50 100 C30 60 0 50 0 50 C0 50 30 40 50 0 Z"></path>
+</svg>
+<div class="max-w-6xl mx-auto px-6 reveal">
+<div class="text-center mb-16">
+<h2 class="font-storybook text-5xl font-bold text-sb-charcoal mb-6">The Hidden Barrier</h2>
+<p class="text-xl text-sb-slate max-w-2xl mx-auto font-medium">Healthcare environments can feel like a stormy sea. When stress rises rapidly, the bridges of communication break down.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 mb-12">
+<!-- Story Card 1: Sensory Overload -->
+<div class="story-card bg-white rounded-[2.5rem] p-8 flex flex-col items-center text-center group relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-sb-aqua/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-32 h-32 mb-8 relative group-hover:scale-110 transition-transform duration-700">
+<svg class="w-full h-full text-sb-eucalyptus" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="#C4EAE4" r="45"></circle>
+<!-- Chaotic tangles in background -->
+<path class="animate-pulse-glow" d="M 20 40 Q 50 10 70 40 T 30 60 T 80 50" fill="none" opacity="0.5" stroke="#7EA8D9" stroke-width="1.5"></path>
+<!-- Central Figure -->
+<path d="M 30 80 C 30 55 70 55 70 80" fill="#5C8D89"></path>
+<circle cx="50" cy="45" fill="#5C8D89" r="14"></circle>
+<!-- Orbiting Senses -->
+<g class="animate-float">
+<circle cx="25" cy="30" fill="#7A9E7E" r="9"></circle>
+<path d="M 20 30 Q 25 25 30 30 Q 25 35 20 30" fill="#FDFBF7"></path>
+<circle cx="25" cy="30" fill="#24333B" r="2.5"></circle>
+</g>
+<g class="animate-float delay-1">
+<circle cx="75" cy="35" fill="#8EB1C7" r="9"></circle>
+<path d="M 72 32 V 38 M 75 31 V 38 M 78 33 V 38" stroke="#FDFBF7" stroke-linecap="round" stroke-width="1.5"></path>
+</g>
+<g class="animate-float delay-2">
+<circle cx="35" cy="70" fill="#6BBFA3" r="9"></circle>
+<path d="M 33 67 C 37 67 38 70 35 71 C 32 72 38 75 38 75" fill="none" stroke="#FDFBF7" stroke-linecap="round" stroke-width="1.5"></path>
+</g>
+</svg>
+</div>
+<h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-4">Sensory Overload</h3>
+<p class="text-sb-slate text-lg">Bright lights and alarms create an environment that feels too loud to process.</p>
+</div>
+<!-- Story Card 2: Communication Drop -->
+<div class="story-card bg-white rounded-[2.5rem] p-8 flex flex-col items-center text-center group mt-4 md:mt-12 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-sb-cornflower/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-32 h-32 mb-8 relative group-hover:scale-110 transition-transform duration-700">
+<svg class="w-full h-full text-sb-cornflower" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="#8EB1C7" fill-opacity="0.1" r="45"></circle>
+<!-- Person Figure -->
+<path d="M 35 85 C 35 70 65 70 65 85" fill="#7A9E7E"></path>
+<circle cx="50" cy="65" fill="#7EA8D9" r="12"></circle>
+<!-- Thought Bubble -->
+<g class="animate-pulse-slow">
+<rect fill="#FDFBF7" height="32" rx="16" stroke="#8EB1C7" stroke-width="1" width="60" x="20" y="15"></rect>
+<!-- Thought Dots (Dissolving) -->
+<g class="animate-dissolve">
+<circle cx="36" cy="31" fill="#5C8D89" r="3"></circle>
+<circle cx="50" cy="31" fill="#5C8D89" r="3"></circle>
+<circle cx="64" cy="31" fill="#5C8D89" r="3"></circle>
+</g>
+</g>
+</svg>
+</div>
+<h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-4">Communication Drop</h3>
+<p class="text-sb-slate text-lg">Under deep stress, speaking and answering questions can become physically impossible.</p>
+</div>
+<!-- Story Card 3: Escalating Stress -->
+<div class="story-card bg-white rounded-[2.5rem] p-8 flex flex-col items-center text-center group mt-8 md:mt-24 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-sb-sage/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-32 h-32 mb-8 relative group-hover:scale-110 transition-transform duration-700">
+<svg class="w-full h-full text-sb-sage" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="#6BBFA3" fill-opacity="0.3" r="45"></circle>
+<g class="animate-float delay-2">
+<!-- Gauge Outline -->
+<path d="M 20 65 A 30 30 0 0 1 80 65" stroke="#7A9E7E" stroke-linecap="round" stroke-width="8"></path>
+<!-- Warning Zone -->
+<path d="M 65 40 A 30 30 0 0 1 80 65" stroke="#3A4B55" stroke-linecap="round" stroke-width="8"></path>
+<!-- Gauge Base -->
+<circle cx="50" cy="65" fill="#5C8D89" r="6"></circle>
+<circle cx="50" cy="65" fill="#FDFBF7" r="2"></circle>
+<!-- Needle -->
+<line class="animate-sway" stroke="#24333B" stroke-linecap="round" stroke-width="3" x1="50" x2="68" y1="65" y2="42"></line>
+<!-- Action lines (pressure shaking) -->
+<path class="animate-pulse-glow delay-2" d="M 72 30 L 76 26 M 82 38 L 87 35" stroke="#3A4B55" stroke-linecap="round" stroke-width="2"></path>
+</g>
+</svg>
+</div>
+<h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-4">Escalating Stress</h3>
+<p class="text-sb-slate text-lg">Without tools to bridge the gap, anxiety spirals upward for both patient and provider.</p>
+</div>
+</div>
+<div class="text-center">
+<a class="inline-block bg-white text-sb-eucalyptus px-8 py-4 rounded-full font-bold text-lg border-2 border-sb-aqua hover:border-sb-sage transition-colors shadow-sm hover:shadow-md" href="about.html">
+                    Read Our Full Story
+                </a>
+</div>
+</div>
+</section>
+<!-- SUMMARY SECTION: Resources Garden -->
+<div class="relative w-full h-32 overflow-hidden -mb-1 bg-sb-eucalyptus/10 z-20">
+<svg aria-hidden="true" class="absolute bottom-0 w-full h-full text-sb-sage" preserveaspectratio="none" viewbox="0 0 1200 120">
+<path d="M0,0 C300,120 900,120 1200,0 L1200,120 L0,120 Z" fill="currentColor"></path>
+</svg>
+</div>
+<section class="pb-24 bg-sb-sage relative overflow-hidden z-20" style="padding-top: 6rem;">
+<!-- Richer garden atmosphere -->
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-sb-eucalyptus/[0.06]"></div>
+<div class="absolute top-10 left-[22%] w-80 h-80 bg-white/[0.05] rounded-full blur-3xl"></div>
+<div class="absolute top-24 right-24 w-72 h-72 bg-sb-aqua/[0.08] rounded-full blur-3xl"></div>
+<div class="absolute bottom-0 left-32 w-64 h-64 bg-sb-seaglass/[0.06] rounded-full blur-3xl"></div>
+<!-- Soft garden shapes -->
+<div class="absolute top-[6%] left-[2%] w-72 h-72 bg-sb-eucalyptus/18 rounded-[42%] rotate-12"></div>
+<div class="absolute top-[20%] left-[12%] w-52 h-36 bg-sb-eucalyptus/12 rounded-[48%] -rotate-12"></div>
+<div class="absolute top-[33%] right-[4%] w-[20rem] h-[15rem] bg-sb-seaglass/12 rounded-[45%] rotate-[22deg]"></div>
+<div class="absolute bottom-[18%] right-[11%] w-56 h-40 bg-sb-eucalyptus/14 rounded-[48%] rotate-[18deg]"></div>
+<div class="absolute bottom-[8%] right-[2%] w-72 h-72 bg-sb-seaglass/8 rounded-full"></div>
+<div class="absolute bottom-[8%] left-[30%] w-72 h-24 bg-sb-eucalyptus/10 rounded-full blur-2xl"></div>
+<div class="max-w-7xl mx-auto px-6 relative z-10 reveal active">
+<div class="grid md:grid-cols-[1.2fr_0.8fr] gap-8 items-center mb-14 md:mb-16">
+<div>
+<h2 class="font-storybook text-3xl md:text-[3.2rem] font-semibold text-white leading-tight mb-5">A Garden o<span class="soft-serif-letter">f</span> Resources</h2>
+<p class="text-lg md:text-[1.1rem] text-sb-ivory/95 font-medium leading-[1.8] max-w-3xl">
+                        We plant seeds of understanding by providing beautiful, tangible tools that transform chaotic environments into calm spaces.
+                    </p>
+</div>
+<div class="hidden md:flex justify-center md:justify-end pr-4">
+<svg aria-hidden="true" class="w-56 h-56 animate-float" fill="none" viewbox="0 0 220 230" xmlns="http://www.w3.org/2000/svg">
+<!-- === STEMS (deepest green so they read against the sage bg) === -->
+<path d="M98 205 Q84 175 60 132" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<path d="M104 205 Q94 166 78 114" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<path d="M110 205 Q110 162 110 98" stroke="#3A6645" stroke-linecap="round" stroke-width="4.5"></path>
+<path d="M116 205 Q126 166 142 114" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<path d="M122 205 Q136 175 160 132" stroke="#3A6645" stroke-linecap="round" stroke-width="4"></path>
+<!-- === LEAVES (darker than bg, clearly visible) === -->
+<path d="M92 182 Q66 163 58 136 Q82 151 92 182Z" fill="#4A7A54"></path>
+<path d="M96 168 Q74 153 72 128 Q92 141 96 168Z" fill="#5C8D62" fill-opacity="0.85"></path>
+<path d="M128 182 Q154 163 162 136 Q138 151 128 182Z" fill="#4A7A54"></path>
+<path d="M124 168 Q146 153 148 128 Q128 141 124 168Z" fill="#5C8D62" fill-opacity="0.85"></path>
+<path d="M110 176 Q97 155 100 130 Q118 147 110 176Z" fill="#4A7A54"></path>
+<!-- === BACK BUDS — clearly visible, softly coloured === -->
+<!-- back-left: warm ivory bud -->
+<g transform="translate(63 128) rotate(-16)">
+<ellipse cx="0" cy="-26" fill="#F5F0E8" rx="9.5" ry="20"></ellipse>
+<ellipse cx="-8" cy="-22" fill="#FAF6EE" rx="8" ry="16"></ellipse>
+<ellipse cx="8" cy="-22" fill="#FFFDF8" rx="8" ry="16"></ellipse>
+<ellipse cx="0" cy="-44" fill="#FFF8F0" fill-opacity="0.9" rx="5" ry="4"></ellipse>
+<ellipse cx="-8" cy="-37" fill="#FFF8F0" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="8" cy="-38" fill="#FFF8F0" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="0" cy="-24" fill="#C4EAE4" fill-opacity="0.5" rx="3" ry="5"></ellipse>
+</g>
+<!-- back-right: soft sky-blue bud -->
+<g transform="translate(157 128) rotate(16)">
+<ellipse cx="0" cy="-26" fill="#B2CCE0" rx="9.5" ry="20"></ellipse>
+<ellipse cx="-8" cy="-22" fill="#C0D8EA" rx="8" ry="16"></ellipse>
+<ellipse cx="8" cy="-22" fill="#CCE2F0" rx="8" ry="16"></ellipse>
+<ellipse cx="0" cy="-44" fill="#D8ECFA" fill-opacity="0.9" rx="5" ry="4"></ellipse>
+<ellipse cx="-8" cy="-37" fill="#D8ECFA" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="8" cy="-38" fill="#D8ECFA" fill-opacity="0.85" rx="4" ry="3.5"></ellipse>
+<ellipse cx="0" cy="-24" fill="#FFFFFF" fill-opacity="0.4" rx="3" ry="5"></ellipse>
+</g>
+<!-- === FRONT THREE BLOOMS — all light tones, high contrast on sage === -->
+<!-- front-left: warm white / cream tulip -->
+<g transform="translate(80 111) rotate(-8)">
+<ellipse cx="0" cy="-36" fill="#FDFBF7" rx="12.5" ry="24"></ellipse>
+<ellipse cx="-10" cy="-28" fill="#F8F4EC" rx="10" ry="19"></ellipse>
+<ellipse cx="10" cy="-28" fill="#FFFDF8" rx="10" ry="19"></ellipse>
+<ellipse cx="-19" cy="-23" fill="#F2EEE4" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="19" cy="-23" fill="#F5F2E8" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="0" cy="-58" fill="#FFF8F0" fill-opacity="0.8" rx="6" ry="5"></ellipse>
+<ellipse cx="-10" cy="-46" fill="#FFFDF8" rx="5" ry="4.5"></ellipse>
+<ellipse cx="10" cy="-48" fill="#FFFDF8" rx="5" ry="4.5"></ellipse>
+<!-- aqua center accent -->
+<ellipse cx="0" cy="-32" fill="#8EB1C7" fill-opacity="0.25" rx="4.5" ry="7"></ellipse>
+</g>
+<!-- front-center: soft aqua bloom (tallest) — aqua pops beautifully on sage -->
+<g transform="translate(110 95)">
+<ellipse cx="0" cy="-38" fill="#C4EAE4" rx="13.5" ry="26"></ellipse>
+<ellipse cx="-11" cy="-30" fill="#AEDDD6" rx="11" ry="21"></ellipse>
+<ellipse cx="11" cy="-30" fill="#C8EDE8" rx="11" ry="21"></ellipse>
+<ellipse cx="-21" cy="-25" fill="#B8E4DC" fill-opacity="0.9" rx="7.5" ry="15"></ellipse>
+<ellipse cx="21" cy="-25" fill="#C0E8E2" fill-opacity="0.9" rx="7.5" ry="15"></ellipse>
+<ellipse cx="0" cy="-62" fill="#D8F2EE" fill-opacity="0.85" rx="7" ry="5.5"></ellipse>
+<ellipse cx="-11" cy="-49" fill="#D4EEEA" rx="6" ry="5.5"></ellipse>
+<ellipse cx="11" cy="-51" fill="#D4EEEA" rx="6" ry="5.5"></ellipse>
+<!-- white inner glow -->
+<ellipse cx="0" cy="-36" fill="#FFFFFF" fill-opacity="0.4" rx="5.5" ry="9"></ellipse>
+<!-- dark stamens for detail -->
+<circle cx="-3" cy="-29" fill="#3A6645" fill-opacity="0.6" r="2"></circle>
+<circle cx="3" cy="-29" fill="#3A6645" fill-opacity="0.6" r="2"></circle>
+<circle cx="0" cy="-25" fill="#3A6645" fill-opacity="0.5" r="2.2"></circle>
+</g>
+<!-- front-right: soft cornflower blue tulip -->
+<g transform="translate(140 111) rotate(8)">
+<ellipse cx="0" cy="-36" fill="#8EB1C7" rx="12.5" ry="24"></ellipse>
+<ellipse cx="-10" cy="-28" fill="#7EA8D9" fill-opacity="0.9" rx="10" ry="19"></ellipse>
+<ellipse cx="10" cy="-28" fill="#9ABCCE" rx="10" ry="19"></ellipse>
+<ellipse cx="-19" cy="-23" fill="#A4C4D6" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="19" cy="-23" fill="#A8C8DA" fill-opacity="0.85" rx="7" ry="14"></ellipse>
+<ellipse cx="0" cy="-58" fill="#C0D8E8" fill-opacity="0.8" rx="6" ry="5"></ellipse>
+<ellipse cx="-10" cy="-46" fill="#B8D2E4" rx="5" ry="4.5"></ellipse>
+<ellipse cx="10" cy="-48" fill="#B8D2E4" rx="5" ry="4.5"></ellipse>
+<!-- white inner glow -->
+<ellipse cx="0" cy="-32" fill="#FFFFFF" fill-opacity="0.3" rx="4.5" ry="7"></ellipse>
+</g>
+<!-- === TINY SIDE BUDS === -->
+<g transform="translate(46 152) rotate(-28)">
+<ellipse cx="0" cy="-9" fill="#F8F4EC" fill-opacity="0.85" rx="4.5" ry="8"></ellipse>
+<ellipse cx="-4" cy="-5" fill="#F2EEE4" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+<ellipse cx="4" cy="-5" fill="#FFFDF8" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+</g>
+<g transform="translate(174 152) rotate(28)">
+<ellipse cx="0" cy="-9" fill="#C0D8EA" fill-opacity="0.85" rx="4.5" ry="8"></ellipse>
+<ellipse cx="-4" cy="-5" fill="#B2CCE0" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+<ellipse cx="4" cy="-5" fill="#CCE2F0" fill-opacity="0.75" rx="3" ry="6"></ellipse>
+</g>
+<!-- === RIBBON TIE === -->
+<path d="M90 205 Q110 200 130 205 Q122 214 110 216 Q98 214 90 205Z" fill="#FFFFFF" fill-opacity="0.3"></path>
+<ellipse cx="110" cy="207" fill="#FFFFFF" fill-opacity="0.25" rx="7" ry="4"></ellipse>
+<!-- === SPARKLES === -->
+<path d="M48 112 L49.5 117 L54 118.5 L49.5 120 L48 125 L46.5 120 L42 118.5 L46.5 117 Z" fill="#FFFFFF" fill-opacity="0.7"></path>
+<path d="M172 97 L173 101 L177 102 L173 103 L172 107 L171 103 L167 102 L171 101 Z" fill="#FFFFFF" fill-opacity="0.65"></path>
+<circle cx="38" cy="144" fill="#FFFFFF" fill-opacity="0.5" r="2.2"></circle>
+<circle cx="182" cy="130" fill="#FFFFFF" fill-opacity="0.45" r="1.8"></circle>
+</svg>
+</div>
+</div>
+<div class="grid md:grid-cols-4 gap-5 lg:gap-6 mb-12">
+<div class="bg-[#9FB596]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#9BC0EA" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+<path d="M3.3 7 12 12l8.7-5"></path>
+<path d="M12 22V12"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Practical<br/>Tools</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Physical cards designed for immediate, gentle use in any room.</p>
+</div>
+<div class="bg-[#A6BC9C]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#F2F7F4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<rect height="18" rx="2" width="18" x="3" y="3"></rect>
+<circle cx="8.5" cy="8.5" r="1.5"></circle>
+<path d="M21 15l-5-5L5 21"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Visual<br/>Supports</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Picture-based boards that replace the need for spoken words entirely.</p>
+</div>
+<div class="bg-[#9CB39B]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#6C9799" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5Z"></path>
+<path d="M12 2v20"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Micro-<br/>Education</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Bite-sized, beautiful learning modules for busy healthcare staff.</p>
+</div>
+<div class="bg-[#A3B79D]/55 border border-white/10 backdrop-blur-sm p-6 lg:p-7 rounded-[2rem] story-card min-h-[14.5rem] flex flex-col justify-start shadow-[0_8px_18px_rgba(58,75,85,0.08)]">
+<div class="w-16 h-16 rounded-full bg-white/16 border border-white/22 flex items-center justify-center mb-6">
+<svg aria-hidden="true" fill="none" height="34" stroke="#B7D1EE" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" viewbox="0 0 24 24" width="34">
+<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+<circle cx="9" cy="7" r="4"></circle>
+<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</svg>
+</div>
+<h4 class="font-storybook font-semibold text-[1.85rem] leading-[1.08] text-sb-charcoal mb-4">Bridge<br/>Building</h4>
+<p class="text-sb-charcoal/80 text-[1rem] leading-8">Fostering deep teamwork between anxious families and busy providers.</p>
+</div>
+</div>
+
+</div>
+</section>
+
+    <!-- SUMMARY SECTION: Healthcare Teams -->
+    <div class="relative w-full h-40 overflow-hidden -mb-1 bg-sb-sage z-20 pointer-events-none">
+        <svg viewBox="0 0 1200 160" preserveAspectRatio="none" class="absolute inset-0 -left-[1%] w-[102%] h-full text-sb-ivory" aria-hidden="true">
+            <path d="M-20,142 C260,28 940,28 1220,142 L1220,160 L-20,160 Z" fill="currentColor"></path>
+        </svg>
+    </div>
+
+    <section class="py-24 relative bg-sb-ivory z-20 overflow-hidden" id="hospitals">
+        <div class="absolute top-0 inset-x-0 h-28 bg-sb-ivory z-0"></div>
+        <div class="absolute top-32 left-[-6rem] w-96 h-96 bg-sb-aqua/14 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-[-8rem] right-[-6rem] w-[28rem] h-[28rem] bg-sb-sage/10 rounded-full blur-2xl"></div>
+
+        <div class="max-w-5xl mx-auto px-6 reveal active relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="font-storybook text-4xl md:text-5xl font-bold text-sb-charcoal mb-6"><span class="soft-serif-letter">F</span>or Healthcare Teams</h2>
+                <p class="text-xl text-sb-slate max-w-2xl mx-auto font-medium leading-relaxed">
+                    Integrating calm into your workflow is a simple, guided path. Follow these steps to build a more inclusive environment.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative">
+                <div class="hidden md:block absolute top-14 left-[15%] right-[15%] h-2 bg-sb-aqua/30 rounded-full z-0"></div>
+                <div class="hidden md:block absolute top-14 left-[15%] right-[15%] h-2 border-t-4 border-dotted border-sb-sage z-0"></div>
+
+                <div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/3 group">
+                    <div class="w-32 h-32 bg-white rounded-full shadow-card border-4 border-sb-cornflower flex items-center justify-center mb-6 animate-float-tilt group-hover:scale-110 transition-transform duration-500">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#7EA8D9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-3">1. Explore</h3>
+                    <p class="text-sb-slate text-lg leading-relaxed">Wander through our visual toolkits and print the gentle keys for your department.</p>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/3 group">
+                    <div class="w-32 h-32 bg-white rounded-full shadow-card border-4 border-sb-sage flex items-center justify-center mb-6 animate-float-tilt delay-1 group-hover:scale-110 transition-transform duration-500">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                        </svg>
+                    </div>
+                    <h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-3">2. Use</h3>
+                    <p class="text-sb-slate text-lg leading-relaxed">Introduce the visual boards during high-stress moments to build an instant bridge.</p>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/3 group">
+                    <div class="w-32 h-32 bg-white rounded-full shadow-card border-4 border-sb-seaglass flex items-center justify-center mb-6 animate-float-tilt delay-2 group-hover:scale-110 transition-transform duration-500">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6BBFA3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-storybook text-3xl font-bold text-sb-charcoal mb-3">3. Learn</h3>
+                    <p class="text-sb-slate text-lg leading-relaxed">Review micro-education modules together in your morning stand-ups.</p>
+                </div>
+            </div>
+
+            <div class="mt-20 flex justify-center gap-6 flex-wrap">
+                <a href="resources.html" class="inline-flex items-center gap-3 bg-[#66999A] text-white px-9 py-4 rounded-full font-bold text-lg border-2 border-[#66999A] transition-all duration-300 shadow-card hover:bg-[#8AAD81] hover:border-[#8AAD81] hover:text-white hover:-translate-y-1 hover:shadow-lg">
+                    View Entire Library
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                <a href="contact.html" class="inline-flex items-center gap-3 bg-white text-sb-eucalyptus px-9 py-4 rounded-full font-bold text-lg hover:-translate-y-1 shadow-sm transition-all duration-300 border-2 border-sb-aqua hover:border-sb-eucalyptus hover:shadow-card">
+                    Request Resources
+                </a>
+            </div>
+        </div>
+    </section>
+
+<!-- RESTORED FOOTER -->
+<footer class="bg-sb-eucalyptus text-sb-ivory pt-24 pb-16 rounded-t-[4rem] relative overflow-hidden -mt-12 z-30 shadow-[0_-8px_25px_rgba(0,0,0,0.05)] border-t border-white/10">
+<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12 mb-12 border-b border-white/20 pb-12 relative z-10">
+<div class="md:col-span-1">
+<div class="flex items-center gap-3 mb-6">
+<svg fill="none" height="32" viewbox="0 0 40 40" width="32">
+<rect fill="#7A9E7E" height="40" rx="12" width="40"></rect>
+<path d="M14 12C14 10.8954 14.8954 10 16 10H22C25.3137 10 28 12.6863 28 16C28 18.0694 26.9515 19.8942 25.3409 20.9419C27.5358 21.8491 29 24.0326 29 26.5C29 30.0899 26.0899 33 22.5 33H16C14.8954 33 14 32.1046 14 31V12Z" fill="#FDFBF7"></path>
+</svg>
+<span class="font-storybook font-bold text-2xl tracking-wide text-white">Calm Before Care</span>
+</div>
+<p class="text-sb-aqua text-lg font-medium">Bridging communication barriers to create peaceful, understood healthcare experiences.</p>
+</div>
+<div>
+<h4 class="font-storybook text-xl font-bold mb-6 text-white">Explore</h4>
+<ul class="space-y-3 text-base text-sb-aqua font-medium">
+<li><a class="hover:text-white transition-colors" href="about.html">Our Mission</a></li>
+<li><a class="hover:text-white transition-colors" href="resources.html">Toolkit Library</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-storybook text-xl font-bold mb-6 text-white">Connect</h4>
+<ul class="space-y-3 text-base text-sb-aqua font-medium">
+<li><a class="hover:text-white transition-colors" href="contact.html">Contact Us</a></li>
+<li><a class="hover:text-white transition-colors" href="donate.html">Support the Project</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm text-sb-aqua/70 gap-6 relative z-10">
+<p class="font-medium">© 2026 Calm Before Care. All rights reserved.</p>
+<p class="text-center md:text-right max-w-xl font-medium">
+<span class="font-bold text-sb-aqua">Disclaimer:</span> We provide communication support and educational resources only. Always consult a healthcare professional.
+            </p>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { root: null, threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+    </script>
 </body>
 </html>
